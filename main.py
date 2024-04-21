@@ -23,7 +23,7 @@ SNAKE_COLOR = (255, 0, 84)
 
 # Snake properties
 SNAKE_SIZE = 20
-SNAKE_SPEED = 35
+SNAKE_SPEED = 20
 SNAKE_BODY = [(WIDTH / 2, HEIGHT / 2)]
 SNAKE_DIRECTION = (1, 0)
 
@@ -81,11 +81,11 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w or event.key == pygame.K_UP and SNAKE_DIRECTION != (0, 1):
                 SNAKE_DIRECTION = (0, -1)
-            elif event.key == pygame.K_DOWN or event.key == pygame.K_s and SNAKE_DIRECTION != (0, -1):
+            elif event.key == pygame.K_DOWN and SNAKE_DIRECTION != (0, -1):
                 SNAKE_DIRECTION = (0, 1)
-            elif event.key == pygame.K_LEFT or event.key == pygame.K_a and SNAKE_DIRECTION != (1, 0):
+            elif event.key == pygame.K_LEFT and SNAKE_DIRECTION != (1, 0):
                 SNAKE_DIRECTION = (-1, 0)
-            elif event.key == pygame.K_RIGHT or event.key == pygame.K_d and SNAKE_DIRECTION != (-1, 0):
+            elif event.key == pygame.K_RIGHT and SNAKE_DIRECTION != (-1, 0):
                 SNAKE_DIRECTION = (1, 0)
 
     # Move the snake
