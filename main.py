@@ -1,7 +1,8 @@
 # Made By Shaheen <abdelazizshaheen162@gmail.com> For Python Workshop In Cic
-#Forked by workshop PythonCic
+# Forked by Farah <farah0shoaib@gmail.com> For Python Workshop In Cic
 
 
+#from tkinter import Label, Tk
 import pygame
 import random
 import os
@@ -16,10 +17,10 @@ WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake Game")
 
 # Colors
-BGCOLOR = (57, 0, 153)
+BGCOLOR = (0, 0, 0)
 TEXT_COLOR = (255, 255, 179)
-FOOD_COLOR = (220,171,107)
-SNAKE_COLOR = (255, 0, 84)
+FOOD_COLOR = (255,0,0)
+SNAKE_COLOR = (0,191,255)
 
 # Snake properties
 SNAKE_SIZE = 20
@@ -71,26 +72,40 @@ def shake_screen():
 # Main game loop
 clock = pygame.time.Clock()
 running = True
+paused = False
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        # Change direction based on key presses
-        if event.type == pygame.KEYDOWN:
+        # Pause the game if 'P' key is pressed
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+            paused = not paused
+
+        # Change direction based on key presses if the game is not paused
+        if not paused and event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w or event.key == pygame.K_UP and SNAKE_DIRECTION != (0, 1):
                 SNAKE_DIRECTION = (0, -1)
-            elif event.key == pygame.K_DOWN and SNAKE_DIRECTION != (0, -1):
+            elif event.key == pygame.K_DOWN or event.key == pygame.K_s and SNAKE_DIRECTION != (0, -1):
                 SNAKE_DIRECTION = (0, 1)
-            elif event.key == pygame.K_LEFT and SNAKE_DIRECTION != (1, 0):
+            elif event.key == pygame.K_LEFT or event.key == pygame.K_a and SNAKE_DIRECTION != (1, 0):
                 SNAKE_DIRECTION = (-1, 0)
-            elif event.key == pygame.K_RIGHT and SNAKE_DIRECTION != (-1, 0):
+            elif event.key == pygame.K_RIGHT or event.key == pygame.K_d and SNAKE_DIRECTION != (-1, 0):
                 SNAKE_DIRECTION = (1, 0)
 
+    # If the game is paused, display the pause menu
+    if paused:
+        # Draw pause menu
+        # You can create a separate function to draw the pause menu
+        pause_text = font.render("PAUSED", True, (255, 255, 255))
+        WINDOW.blit(pause_text, ((WIDTH - pause_text.get_width()) // 2, (HEIGHT - pause_text.get_height()) // 2))
+        pygame.display.update()
+        continue  # Skip the rest of the game loop if the game is paused
+
     # Move the snake
-    new_head = (SNAKE_BODY[0][0] + SNAKE_SPEED * SNAKE_DIRECTION[0],
-                SNAKE_BODY[0][1] + SNAKE_SPEED * SNAKE_DIRECTION[1])
+    new_head = (SNAKE_BODY[0][0] + SNAKE_SPEED * SNAKE_DIRECTION[0], SNAKE_BODY[0][1] + SNAKE_SPEED * SNAKE_DIRECTION[1])
+    new_head = (new_head[0] % WIDTH, new_head[1] % HEIGHT)
     SNAKE_BODY.insert(0, new_head)
 
     # Check for collision with food
